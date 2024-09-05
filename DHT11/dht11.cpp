@@ -14,7 +14,7 @@ void setup() {
   lcd.init();
   lcd.backlight();
   Serial.begin(9600);
-  Serial.println(F("DHT22 example!"));
+  Serial.println(F("DHT22 example!")); 
 
   dht.begin();
 }
