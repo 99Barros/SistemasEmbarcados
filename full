@@ -1,0 +1,67 @@
+#include <LiquidCrystal_I2C.h>
+#include "DHT.h"
+int ValorLDR;       // Armazenar a leitura do sensor LDR
+int IntensidadeLuz; // Transforma a leitura em uma escala de 0 a 100
+int pinoLDR = A0;   // PINO ANALÓGICO utilizado para ler o LDR
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+#define DHTPIN 2     
+#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+
+DHT dht(DHTPIN, DHTTYPE);
+
+void setup()
+{
+    lcd.init();
+    lcd.backlight();
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.setCursor(0, 1);
+     dht.begin();
+
+    Serial.begin(9600);      // Define a velocidade do monitor serial
+    pinMode(pinoLDR, INPUT); // Define o pino que o LDR está ligado como entrada de dados
+}
+int ControleLuminosidade(int ValorLDR)
+{
+    IntensidadeLuz = map(ValorLDR, 958, 205, 0, 100);
+    if (IntensidadeLuz < 0)
+    {
+        IntensidadeLuz = 0;
+    }
+    else if (IntensidadeLuz > 100)
+    {
+        IntensidadeLuz = 100;
+    }
+    return IntensidadeLuz;
+}
+
+void loop()
+{
+    float temperature = dht.readTemperature();
+    float humidity = dht.readHumidity();
+    ValorLDR = analogRead(pinoLDR);                 // Faz a leitura do sensor, em um valor que pode variar de 0 a 1023
+                                                    // Converte o valor para uma escala de 0 a 100
+    Serial.print("Intensidade de Luz 0 - 1023 = "); // Imprime texto “Intensidade de Luz = ” na tela
+    Serial.println(ValorLDR);                       // Imprime o valor lido na tela após o sinal de igual do texto acima
+    Serial.print("Intensidade de Luz 0 - 100% = ");
+    Serial.println(ControleLuminosidade(ValorLDR));
+
+    lcd.print("Intensidade:");
+    lcd.print(ControleLuminosidade(ValorLDR));
+    delay(800); // Aguarda 800 milissegundos para fazer nova leitura
+    lcd.clear();
+  if (isnan(temperature) || isnan(humidity)) 
+  {
+    Serial.println(F("Failed to read from DHT sensor!"));
+    return;
+  }
+    lcd.print("Temperatura:");
+    lcd.print(temperature);
+    delay(800); // Aguarda 800 milissegundos para fazer nova leitura
+    lcd.clear();
+    lcd.print("Umidade:");
+    lcd.print(humidity);
+
+}
