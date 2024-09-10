@@ -36,7 +36,14 @@ int ControleLuminosidade(int ValorLDR)
     }
     return IntensidadeLuz;
 }
+  bool MedeLimite(int grandeza,int minimo, int maximo)
+    {
+      if (grandeza < minimo || grandeza > maximo){
+        return false;
+      }
+      else return true;
 
+    }
 void loop()
 {
     float temperature = dht.readTemperature();
@@ -47,21 +54,30 @@ void loop()
     Serial.println(ValorLDR);                       // Imprime o valor lido na tela após o sinal de igual do texto acima
     Serial.print("Intensidade de Luz 0 - 100% = ");
     Serial.println(ControleLuminosidade(ValorLDR));
-
-    lcd.print("Intensidade:");
-    lcd.print(ControleLuminosidade(ValorLDR));
-    delay(800); // Aguarda 800 milissegundos para fazer nova leitura
-    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("I:");
+    int luminosidade = ControleLuminosidade(ValorLDR);
+    lcd.print(luminosidade);
+    if (MedeLimite(luminosidade, 0, 30 )){
+      Serial.println(("Luminosidade OK"));
+    }
+    else Serial.println(("Luminosidade fora do padrão"));
+     // Aguarda 800 milissegundos para fazer nova leitura
+    lcd.setCursor(3, 1);     
   if (isnan(temperature) || isnan(humidity)) 
   {
     Serial.println(F("Failed to read from DHT sensor!"));
     return;
   }
-    lcd.print("Temperatura:");
+    lcd.print("T:");
     lcd.print(temperature);
-    delay(800); // Aguarda 800 milissegundos para fazer nova leitura
-    lcd.clear();
-    lcd.print("Umidade:");
+    // Aguarda 800 milissegundos para fazer nova leitura
+    lcd.setCursor(12, 0); 
+    lcd.print("U:");
     lcd.print(humidity);
+    delay(1000);
+    lcd.clear();
 
-}
+   
+
+    }
