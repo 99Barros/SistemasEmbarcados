@@ -8,6 +8,7 @@
 int ValorLDR;       // Armazenar a leitura do sensor LDR
 int IntensidadeLuz; // Transforma a leitura em uma escala de 0 a 100
 int pinoLDR = A0;   // PINO ANALÓGICO utilizado para ler o LDR
+int buzzerPin = 7;  // PINO utilizado para Buzzer
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 
@@ -74,6 +75,7 @@ void setup()
     Serial.begin(9600);      // Define a velocidade do monitor serial
     pinMode(pinoLDR, INPUT); // Define o pino que o LDR está ligado como entrada de dados
     EEPROM.begin();
+    pinMode(buzzerPin, OUTPUT);
 }
 int ControleLuminosidade(int ValorLDR)
 {
@@ -127,6 +129,7 @@ void loop()
     delay(100) ;
     int delayTotal = 12000; 
     for (int i = 0; i < 5; i++){
+    noTone(buzzerPin);
     lcd.setCursor(0, 0);  // Posiciona o cursor corretamente
     lcd.print("I:");    
     lcd.print(luminosidade);
@@ -140,14 +143,18 @@ void loop()
     if (!teste_luminosidade){
       lcd.setCursor(0, 0);
       lcd.print("    ");
+      tone(buzzerPin, 500);
     }
     if (!teste_temperature){
        lcd.setCursor(3, 1);
        lcd.print("       ");
+       tone(buzzerPin, 500);
     }    
     if(!teste_humidity){
       lcd.setCursor(12, 0);
       lcd.print("    ");
+      tone(buzzerPin, 500);
+
     }
     delay(delayTotal/10);   
     temperature = dht.readTemperature();
@@ -157,7 +164,9 @@ void loop()
     teste_luminosidade = MedeLimite(luminosidade, 0, 30 );
     teste_temperature = MedeLimite(temperature, 15, 25 );
     teste_humidity = MedeLimite(humidity, 30, 50 );
-    }  
+    }
+    noTone(buzzerPin);
+  
 
 
     if(!(teste_luminosidade || teste_temperature || teste_humidity)){
@@ -170,7 +179,6 @@ void loop()
     EEPROM.put(currentAddress + 6, humiInt);
     EEPROM.put(currentAddress + 8, luminosidade);
     Serial.println("Grandezas foras dos padrões");
-    // Colocar Buzzer para apitar
 
     getNextAddress(); 
     }    
