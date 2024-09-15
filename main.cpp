@@ -70,9 +70,7 @@ void setup()
     lcd.clear();
     dht.begin();
     RTC.begin();    // Inicialização do Relógio em Tempo Real
-    RTC.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    // RTC.adjust(DateTime(2024, 5, 6, 08, 15, 00));
-
+    RTC.adjust(DateTime(F(__DATE__), F(__TIME__)));   
     Serial.begin(9600);      // Define a velocidade do monitor serial
     pinMode(pinoLDR, INPUT); // Define o pino que o LDR está ligado como entrada de dados
     EEPROM.begin();
@@ -118,10 +116,10 @@ void loop()
     int luminosidade = ControleLuminosidade(ValorLDR);  
     lastLoggedMinute = adjustedTime.minute(); 
     lcd.clear();
-    lcd.print("Checando se as grandezas")  ;
+    lcd.print("Checando padrao")  ;
     lcd.setCursor(0, 1);
-    lcd.print("estao no padrao...");
-    delay(1000) ;
+    lcd.print("das grandezas...");
+    delay(3000);
     lcd.clear();
     bool teste_luminosidade = MedeLimite(luminosidade, 0, 30 );
     bool teste_temperature = MedeLimite(temperature, 15, 25 );
@@ -172,6 +170,7 @@ void loop()
     EEPROM.put(currentAddress + 6, humiInt);
     EEPROM.put(currentAddress + 8, luminosidade);
     Serial.println("Grandezas foras dos padrões");
+    // Colocar Buzzer para apitar
 
     getNextAddress(); 
     }    
