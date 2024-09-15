@@ -109,22 +109,26 @@ void loop()
     get_log();
     // Convertendo o novo tempo para DateTime
     
+
+  // Verifica se o minuto atual é diferente do minuto do último registro
+    if (adjustedTime.minute() != lastLoggedMinute) {
     float temperature = dht.readTemperature();
     float humidity = dht.readHumidity();
     ValorLDR = analogRead(pinoLDR);  
-    int luminosidade = ControleLuminosidade(ValorLDR);
-  // Verifica se o minuto atual é diferente do minuto do último registro
-    if (adjustedTime.minute() != lastLoggedMinute) {
+    int luminosidade = ControleLuminosidade(ValorLDR);  
     lastLoggedMinute = adjustedTime.minute(); 
     lcd.clear();
-    lcd.print("Checando se as grandezas estão no padrão...")  ;
+    lcd.print("Checando se as grandezas")  ;
+    lcd.setCursor(0, 1);
+    lcd.print("estao no padrao...");
+    delay(1000) ;
     lcd.clear();
     bool teste_luminosidade = MedeLimite(luminosidade, 0, 30 );
     bool teste_temperature = MedeLimite(temperature, 15, 25 );
     bool teste_humidity = MedeLimite(humidity, 30, 50 );
-    delay(100)   ;
-    int delayTotal = 10000;
-    lcd.setCursor(0, 0);
+    delay(100) ;
+    int delayTotal = 12000; 
+    for (int i = 0; i < 5; i++){
     lcd.setCursor(0, 0);  // Posiciona o cursor corretamente
     lcd.print("I:");    
     lcd.print(luminosidade);
@@ -134,27 +138,29 @@ void loop()
     lcd.setCursor(12, 0); 
     lcd.print("U:");
     lcd.print(humidity);
-    delay(delayTotal);    
-   
- if (!teste_luminosidade) {
-    for (int i = 0; i < delayTotal / 10; i++) {
-        lcd.setCursor(0, 0);
-        
-        // Pisca: exibe o valor de luminosidade por metade do tempo
-        if (i % 2 == 0) {
-            lcd.print("I:");    
-            lcd.print(luminosidade);
-        } else {
-            // Limpa o campo para simular o "piscar"
-            lcd.print("    ");  // Espaços para apagar o valor
-        }
-
-        delay(delayTotal / 10);  // Aguarda para a próxima piscada
+    delay(delayTotal/10); 
+    if (!teste_luminosidade){
+      lcd.setCursor(0, 0);
+      lcd.print("    ");
     }
-}
-//
+    if (!teste_temperature){
+       lcd.setCursor(3, 1);
+       lcd.print("       ");
+    }    
+    if(!teste_humidity){
+      lcd.setCursor(12, 0);
+      lcd.print("    ");
+    }
+    delay(delayTotal/10);   
+    temperature = dht.readTemperature();
+    humidity = dht.readHumidity();
+    ValorLDR = analogRead(pinoLDR);  
+    luminosidade = ControleLuminosidade(ValorLDR);  
+    teste_luminosidade = MedeLimite(luminosidade, 0, 30 );
+    teste_temperature = MedeLimite(temperature, 15, 25 );
+    teste_humidity = MedeLimite(humidity, 30, 50 );
+    }  
 
-//a
 
     if(!(teste_luminosidade || teste_temperature || teste_humidity)){
 
@@ -202,6 +208,3 @@ void loop()
             
 
 }
-   
-
-    
