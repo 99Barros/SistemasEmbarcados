@@ -46,6 +46,40 @@ byte name0x1_6[] = { B10000, B11100, B11000, B11100, B11000, B11100, B11000, B11
 byte name1x0_6[] = { B00011, B00111, B01111, B01111, B01111, B01111, B00111, B00011 };
 byte name1x1_6[] = { B11000, B11100, B11110, B11110, B11110, B11110, B11100, B11000 };
 
+//Termometro Certo
+byte termometroVazio[] = {
+  B01110,
+  B01010,
+  B01010,
+  B01010,
+  B10001,
+  B10001,
+  B10001,
+  B01110
+};
+
+byte termometroMedio[] = {
+  B01110,
+  B01010,
+  B01010,
+  B01010,
+  B11111,
+  B11111,
+  B11111,
+  B01110
+};
+
+byte termometroCheio[] = {
+  B01110,
+  B01110,
+  B01110,
+  B01110,
+  B11111,
+  B11111,
+  B11111,
+  B01110
+};
+
 void setup() {
   Serial.begin(115200);
   Serial.println(F("DHT22 example!"));
