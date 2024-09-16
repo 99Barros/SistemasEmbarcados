@@ -4,6 +4,8 @@
 #include <RTClib.h> // Biblioteca para Relógio em Tempo Real
 #include <Wire.h>   // Biblioteca para comunicação I2C
 #include "termometro.h"
+#include "raio.h"
+#include "gota.h"
 
 int ValorLDR;       // Armazenar a leitura do sensor LDR
 int IntensidadeLuz; // Transforma a leitura em uma escala de 0 a 100
@@ -130,36 +132,38 @@ void loop()
     int delayTotal = 12000; 
     for (int i = 0; i < 5; i++){
     noTone(buzzerPin);
-    //lcd.setCursor(0, 0);  // Posiciona o cursor corretamente
-    //lcd.print("I:");    
-    //lcd.print(luminosidade);
-    //lcd.setCursor(3, 1);
+
+    verifyHumidity(humidity);
+
+    verifyLuminosity(luminosidade);
 
     verificaTemperatura(temperature);
 
-    lcd.setCursor(12, 0); 
-    lcd.print("U:");
-    lcd.print(humidity);
+    //lcd.setCursor(12, 0); 
+    //lcd.print("U:");
+    //lcd.print(humidity);
 
     delay(delayTotal/10); 
     if (!teste_luminosidade){
-      lcd.setCursor(0, 0);
-      lcd.print("    ");
-      lcd.setCursor(0,1);
-      lcd.print("    ");
+      lcd.setCursor(6, 0);
+      lcd.print("      ");
+      lcd.setCursor(6,1);
+      lcd.print("      ");
       tone(buzzerPin, 500);
     }
     if (!teste_temperature){
-       lcd.setCursor(0, 0);
-       lcd.print("       ");
-       lcd.setCursor(0, 1);
-       lcd.print("    ");
-       tone(buzzerPin, 500);
-    }    
+      lcd.setCursor(0, 0);
+      lcd.print("      ");
+      lcd.setCursor(0, 1);
+      lcd.print("      ");
+      tone(buzzerPin, 200);
+    }
     if(!teste_humidity){
       lcd.setCursor(12, 0);
       lcd.print("    ");
-      tone(buzzerPin, 500);
+      lcd.setCursor(12, 1);
+      lcd.print("    ");
+      tone(buzzerPin, 700);
 
     }
     delay(delayTotal/10);   
@@ -173,8 +177,6 @@ void loop()
     }
     noTone(buzzerPin);
   
-
-
     if(teste_luminosidade == false || teste_temperature == false || teste_humidity == false){
 
     int tempInt = (int)(temperature * 100);
