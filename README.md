@@ -4,7 +4,7 @@
 ## Data Logger - Projeto com Arduino
 
 ### Descrição
-O **Data Logger** é um dispositivo capaz de monitorar e registrar dados ambientais, como **temperatura**, **umidade** e **luminosidade**, em intervalos regulares de tempo. Utilizando sensores de temperatura e umidade, um sensor de luz e um relógio de tempo real (**RTC**), os dados são exibidos em um display **LCD** e podem ser armazenados para posterior análise. O projeto é alimentado por uma bateria de 9V, garantindo sua mobilidade e funcionamento autônomo.
+O **Data Logger** é um dispositivo capaz de monitorar e registrar dados ambientais, como **temperatura**, **umidade** e **luminosidade**, em intervalos regulares de tempo. Utilizando sensores de temperatura e umidade, um sensor de luz e um relógio de tempo real (**RTC**), os dados são exibidos em um display **LCD** e podem ser armazenados na memória **EEPROM do Arduino UNO** para posterior análise. O projeto é alimentado por uma bateria de 9V, garantindo sua mobilidade e funcionamento autônomo.
 
 ---
 
