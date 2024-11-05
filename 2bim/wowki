@@ -11,12 +11,12 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include "DHT.h"
-#define DHTPIN 14     
-#define DHTTYPE DHT22   // DHT 22  (AM2302), AM2321
+#define DHTPIN 14
+#define DHTTYPE DHT11   // DHT 22  (AM2302), AM2321
 
 // Configurações - variáveis editáveis
-const char* default_SSID = "Wokwi-GUEST"; // Nome da rede Wi-Fi
-const char* default_PASSWORD = ""; // Senha da rede Wi-Fi
+const char* default_SSID = "HORIZON"; // Nome da rede Wi-Fi
+const char* default_PASSWORD = "1234567890"; // Senha da rede Wi-Fi
 const char* default_BROKER_MQTT = "20.206.204.231"; // IP do Broker MQTT
 const int default_BROKER_PORT = 1883; // Porta do Broker MQTT
 const char* default_TOPICO_SUBSCRIBE = "/TEF/lamp05x/cmd"; // Tópico MQTT de escuta
@@ -178,8 +178,9 @@ void reconnectMQTT() {
 void handleLuminosity() {
     const int potPin = 34;
     int sensorValue = analogRead(potPin);
-    int luminosity = map(sensorValue, 205, 958, 0, 100);
-    Serial.println("Valor lido:" + sensorValue);
+    int luminosity = map(sensorValue, 90, 4100, 0, 100);
+    //Serial.print("Valor lido: ");
+    //Serial.println(sensorValue);
     String mensagem = String(luminosity);
     Serial.print("Valor da luminosidade: ");
     Serial.println(mensagem.c_str());
