@@ -81,6 +81,7 @@ void loop() {
     EnviaEstadoOutputMQTT();
     handleLuminosity();
     handleTemperature();
+    handleHumidity();
     MQTT.loop();
 }
 
@@ -188,7 +189,7 @@ void handleLuminosity() {
 void handleTemperature(){
   float temperature = dht.readTemperature();
   String temperature_string = String(temperature);
-  Serial.println("Valor Temp:");
+  Serial.print("Valor Temp:");
   Serial.print(temperature);
   MQTT.publish(TOPICO_PUBLISH_4, temperature_string.c_str());
 
@@ -197,7 +198,7 @@ void handleTemperature(){
 void handleHumidity(){
   float humidity = dht.readHumidity();
   String humidity_string = String(humidity);
-  Serial.println("Valor Humi:");
+  Serial.print("Valor Humi:");
   Serial.print(humidity);
   MQTT.publish(TOPICO_PUBLISH_3, humidity_string.c_str());
 
